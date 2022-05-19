@@ -1,0 +1,18 @@
+{
+  "name": "rule-engine",
+  "version": "1.0.0",
+  "main": "lib/cjs/index.js",
+  "module": "lib/index.js",
+  "files": [
+    "lib/"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json && tsc -p ./tsconfig-cjs.json",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "prettier": "2.6.2",
+    "typescript": "4.6.4"
+  }
+}
