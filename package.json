@@ -8,6 +8,7 @@
   ],
   "license": "MIT",
   "scripts": {
+    "ci": "yarn install --frozen-lockfile --immutable-cache --immutable --check-cache",
     "build": "tsc -p ./tsconfig.json && tsc -p ./tsconfig-cjs.json",
     "prepublishOnly": "npm run build",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register '**/*.test.ts'"
