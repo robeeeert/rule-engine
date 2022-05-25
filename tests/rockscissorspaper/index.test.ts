@@ -13,18 +13,22 @@ describe("Rock Paper Scissors game", () => {
     const engine = new RoundRuleSet()
 
     context("after first round", () => {
-        let result: IRoundResult | undefined;
+        let env: IRoundEnv | undefined;
         before(() => {
-            const env: IRoundEnv = {
+            env = {
                 playerAWeapon: "rock",
                 playerBWeapon: "scissors",
-                game
+                game,
+                result: {
+                    type: "pending",
+                    result: undefined
+                }
             }
-            result = engine.exec(env);
+            engine.exec(env);
         })
 
         it("should have player A wins as result", () => {
-            expect(result!.result).to.eq("playerAWon")
+            expect(env!.result.result).to.eq("playerAWon")
         })
 
         it("should increase player A's score", () => {
@@ -41,18 +45,22 @@ describe("Rock Paper Scissors game", () => {
     })
 
     context("after second round", () => {
-        let result: IRoundResult | undefined;
+        let env: IRoundEnv | undefined;
         before(() => {
-            const env: IRoundEnv = {
+            env = {
                 playerAWeapon: "rock",
                 playerBWeapon: "rock",
-                game
+                game,
+                result: {
+                    type: "pending",
+                    result: undefined
+                }
             }
-            result = engine.exec(env);
+            engine.exec(env);
         })
 
         it("should have even as result", () => {
-            expect(result!.result).to.eq("even")
+            expect(env!.result.result).to.eq("even")
         })
 
         it("should not increase player A's score", () => {
@@ -69,18 +77,22 @@ describe("Rock Paper Scissors game", () => {
     })
 
     context("after third round", () => {
-        let result: IRoundResult | undefined;
+        let env: IRoundEnv | undefined;
         before(() => {
-            const env: IRoundEnv = {
+            env = {
                 playerAWeapon: "scissors",
                 playerBWeapon: "rock",
-                game
+                game,
+                result: {
+                    type: "pending",
+                    result: undefined
+                }
             }
-            result = engine.exec(env);
+            engine.exec(env);
         })
 
         it("should have playerBWon as result", () => {
-            expect(result!.result).to.eq("playerBWon")
+            expect(env!.result.result).to.eq("playerBWon")
         })
 
         it("should not increase player A's score", () => {
@@ -97,18 +109,22 @@ describe("Rock Paper Scissors game", () => {
     })
 
     context("after fourth round", () => {
-        let result: IRoundResult | undefined;
+        let env: IRoundEnv | undefined;
         before(() => {
-            const env: IRoundEnv = {
+            env = {
                 playerAWeapon: "rock",
                 playerBWeapon: "paper",
-                game
+                game,
+                result: {
+                    type: "pending",
+                    result: undefined
+                }
             }
-            result = engine.exec(env);
+            engine.exec(env);
         })
 
         it("should have playerBWon as result", () => {
-            expect(result!.result).to.eq("playerBWon")
+            expect(env!.result.result).to.eq("playerBWon")
         })
 
         it("should not increase player A's score", () => {
@@ -125,18 +141,22 @@ describe("Rock Paper Scissors game", () => {
     })
 
     context("after final round", () => {
-        let result: IRoundResult | undefined;
+        let env: IRoundEnv | undefined;
         before(() => {
-            const env: IRoundEnv = {
+            env = {
                 playerAWeapon: "paper",
                 playerBWeapon: "scissors",
-                game
+                game,
+                result: {
+                    type: "pending",
+                    result: undefined
+                }
             }
-            result = engine.exec(env);
+            engine.exec(env);
         })
 
         it("should have playerBWon as result", () => {
-            expect(result!.result).to.eq("playerBWon")
+            expect(env!.result.result).to.eq("playerBWon")
         })
 
         it("should not increase player A's score", () => {
@@ -153,22 +173,26 @@ describe("Rock Paper Scissors game", () => {
     })
 
     context("after game over", () => {
-        let result: IRoundResult | undefined;
+        let env: IRoundEnv | undefined;
         before(() => {
-            const env: IRoundEnv = {
+            env = {
                 playerAWeapon: "paper",
                 playerBWeapon: "scissors",
-                game
+                game,
+                result: {
+                    type: "pending",
+                    result: undefined
+                }
             }
-            result = engine.exec(env);
+            engine.exec(env);
         })
 
         it("should return an error as result", () => {
-            expect(result!.type).to.eq("error")
+            expect(env!.result.type).to.eq("error")
         })
 
         it("should not have a result field in the result", () => {
-            expect(result!.result).to.eq(undefined)
+            expect(env!.result.result).to.eq(undefined)
         })
 
         it("should not increase player A's score", () => {
