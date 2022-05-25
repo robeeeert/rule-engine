@@ -1,12 +1,11 @@
 import { expect } from "chai";
-import { IGame, IRoundResult, RoundRuleSet, TWeapon } from "../../examples/rockpaperscissors";
+import { IRoundEnv, IGame, IRoundResult, RoundRuleSet, TWeapon } from "../../examples/rockpaperscissors";
 
 class Game implements IGame {
-    state: "running" | "over" = "running";
-    playerAScore = 0;
-    playerBScore = 0;
-    playerAWeapon: TWeapon | undefined = undefined;
-    playerBWeapon: TWeapon | undefined = undefined;
+    state: IGame["state"] = "running"
+    playerAScore = 0
+    playerBScore = 0
+    maxScore = 3
 }
 
 describe("Rock Paper Scissors game", () => {
@@ -16,9 +15,12 @@ describe("Rock Paper Scissors game", () => {
     context("after first round", () => {
         let result: IRoundResult | undefined;
         before(() => {
-            game.playerAWeapon = "rock"
-            game.playerBWeapon = "scissors"
-            result = engine.exec(game);
+            const env: IRoundEnv = {
+                playerAWeapon: "rock",
+                playerBWeapon: "scissors",
+                game
+            }
+            result = engine.exec(env);
         })
 
         it("should have player A wins as result", () => {
@@ -41,9 +43,12 @@ describe("Rock Paper Scissors game", () => {
     context("after second round", () => {
         let result: IRoundResult | undefined;
         before(() => {
-            game.playerAWeapon = "rock"
-            game.playerBWeapon = "rock"
-            result = engine.exec(game);
+            const env: IRoundEnv = {
+                playerAWeapon: "rock",
+                playerBWeapon: "rock",
+                game
+            }
+            result = engine.exec(env);
         })
 
         it("should have even as result", () => {
@@ -66,9 +71,12 @@ describe("Rock Paper Scissors game", () => {
     context("after third round", () => {
         let result: IRoundResult | undefined;
         before(() => {
-            game.playerAWeapon = "scissors"
-            game.playerBWeapon = "rock"
-            result = engine.exec(game);
+            const env: IRoundEnv = {
+                playerAWeapon: "scissors",
+                playerBWeapon: "rock",
+                game
+            }
+            result = engine.exec(env);
         })
 
         it("should have playerBWon as result", () => {
@@ -91,9 +99,12 @@ describe("Rock Paper Scissors game", () => {
     context("after fourth round", () => {
         let result: IRoundResult | undefined;
         before(() => {
-            game.playerAWeapon = "rock"
-            game.playerBWeapon = "paper"
-            result = engine.exec(game);
+            const env: IRoundEnv = {
+                playerAWeapon: "rock",
+                playerBWeapon: "paper",
+                game
+            }
+            result = engine.exec(env);
         })
 
         it("should have playerBWon as result", () => {
@@ -116,9 +127,12 @@ describe("Rock Paper Scissors game", () => {
     context("after final round", () => {
         let result: IRoundResult | undefined;
         before(() => {
-            game.playerAWeapon = "paper"
-            game.playerBWeapon = "scissors"
-            result = engine.exec(game);
+            const env: IRoundEnv = {
+                playerAWeapon: "paper",
+                playerBWeapon: "scissors",
+                game
+            }
+            result = engine.exec(env);
         })
 
         it("should have playerBWon as result", () => {
@@ -141,9 +155,12 @@ describe("Rock Paper Scissors game", () => {
     context("after game over", () => {
         let result: IRoundResult | undefined;
         before(() => {
-            game.playerAWeapon = "paper"
-            game.playerBWeapon = "scissors"
-            result = engine.exec(game);
+            const env: IRoundEnv = {
+                playerAWeapon: "paper",
+                playerBWeapon: "scissors",
+                game
+            }
+            result = engine.exec(env);
         })
 
         it("should return an error as result", () => {

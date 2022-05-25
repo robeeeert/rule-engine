@@ -2,8 +2,12 @@ import { BaseRuleSet, TRule } from "../../src/index"
 
 export interface IGame {
     state: "running" | "over";
+    maxScore: number;
     playerAScore: number;
     playerBScore: number;
+}
+export interface IRoundEnv {
+    game: IGame;
     playerAWeapon: TWeapon | undefined;
     playerBWeapon: TWeapon | undefined;
 }
@@ -15,13 +19,13 @@ export interface IRoundResult {
     result: "playerAWon" | "playerBWon" | "even" | undefined;
 }
 
-export class RoundRuleSet extends BaseRuleSet<IGame, IRoundResult> {
-    getRules(): readonly TRule<IGame, IRoundResult>[] {
+export class RoundRuleSet extends BaseRuleSet<IRoundEnv, IRoundResult> {
+    getRules(): readonly TRule<IRoundEnv, IRoundResult>[] {
         return [
             {
                 type: "precondition",
                 displayName: "Game has to be running",
-                test(game, result) {
+                test({ game }, result) {
                     const valid = game.state === "running"
                     result.type = "error";
                     result.result = undefined;
@@ -50,7 +54,7 @@ export class RoundRuleSet extends BaseRuleSet<IGame, IRoundResult> {
                 type: "rule",
                 displayName: "Update game score based on result",
                 doesApply() { return true },
-                apply(game, { result }) {
+                apply({ game }, { result }) {
                     if (result === "playerAWon") {
                         game.playerAScore += 1
                     } else if (result === "playerBWon") {
@@ -60,12 +64,11 @@ export class RoundRuleSet extends BaseRuleSet<IGame, IRoundResult> {
             },
             {
                 type: "rule",
-                displayName: "",
+                displayName: "End game if one player reaches max score",
                 doesApply() { return true },
-                apply(game, { result }) {
-                    const maxScore = 3;
-                    if (game.playerAScore === maxScore || game.playerBScore === maxScore) {
-                        game.state = "over"
+                apply(env, { result }) {
+                    if (env.game.playerAScore === env.game.maxScore || env.game.playerBScore === env.game.maxScore) {
+                        env.game.state = "over"
                     }
                 }
             }
